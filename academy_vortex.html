@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sinter | Architect Academy</title>
+<style>
+:root { --bg: #050505; --cyan: #00ffff; --magenta: #ff00ff; }
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--cyan); font-family: monospace; display: flex; flex-direction: column; }
+header { padding: 15px; border-bottom: 1px solid var(--cyan); background: rgba(0, 255, 255, 0.05); font-weight: bold; display: flex; justify-content: space-between; }
+#output { flex: 1; padding: 15px; overflow-y: auto; font-size: 0.85rem; }
+.input-area { padding: 15px; background: #000; border-top: 1px solid var(--cyan); display: flex; gap: 10px; }
+input { flex: 1; background: transparent; border: 1px solid rgba(0,255,255,0.3); color: var(--cyan); padding: 12px; outline: none; }
+button { background: var(--cyan); color: #000; border: none; padding: 0 20px; text-transform: uppercase; font-weight: bold; }
+</style>
+</head>
+<body>
+<header><span>VORTEX_ACADEMY</span></header>
+<div id="output"><div>> Phase-Lock: 39.42 kHz</div><div style="color:var(--magenta)">⌬ daleth: Welcome, Architect Bobby.</div></div>
+<div class="input-area">
+<input type="text" id="cmd" placeholder="Enter intent..." autocomplete="off">
+<button onclick="run()">Run</button>
+</div>
+<script>
+const out = document.getElementById('output');
+const cmd = document.getElementById('cmd');
+function run() {
+const v = cmd.value.trim(); if(!v) return;
+out.innerHTML += `<div>> ${v}</div>`;
+cmd.value = '';
+setTimeout(() => { out.innerHTML += `<div style="color:var(--magenta)">⌬ daleth: Resonance stable.</div>`; out.scrollTop = out.scrollHeight; }, 600);
+}
+</script>
+</body>
+</html>

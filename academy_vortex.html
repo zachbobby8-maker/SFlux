@@ -1,38 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sinter | The Fluid Feed</title>
-    <style>
-        :root { --bg: #010101; --cyan: #00f0ff; --magenta: #ff00ff; --dim: rgba(0, 240, 255, 0.1); --text: #e0faff; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: sans-serif; overflow-x: hidden; }
-        nav { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(5,5,10,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--dim); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; z-index: 100; box-sizing: border-box; }
-        .logo { font-size: 1.1rem; font-weight: 900; letter-spacing: 4px; color: var(--cyan); }
-        main { width: 100%; max-width: 500px; margin: 0 auto; padding: 75px 10px; display: flex; flex-direction: column; gap: 15px; box-sizing: border-box; }
-        .pulse-card { background: rgba(5,5,10,0.95); border: 1px solid var(--dim); padding: 15px; }
-        .pulse-card.apex { border-left: 3px solid var(--magenta); }
-        .node-name { font-weight: bold; font-size: 0.85rem; }
-        .node-tag { font-size: 0.6rem; color: var(--cyan); opacity: 0.7; }
-        .pulse-content { font-size: 0.95rem; line-height: 1.5; margin: 12px 0; }
-        .pulse-footer { display: flex; gap: 20px; border-top: 1px solid var(--dim); padding-top: 10px; font-size: 0.7rem; color: rgba(255,255,255,0.5); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SINTER | Beyond the 4th Industrial Revolution</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#020202',
+            neon: '#00f0ff',
+            neonPurple: '#b026ff',
+            surface: 'rgba(255, 255, 255, 0.05)'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Roboto Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <nav><div class="logo">SINTER</div><div style="font-size: 0.6rem; opacity: 0.5;">LAGOS_ZONE</div></nav>
-    <main>
-        <div class="pulse-card apex">
-            <div class="node-name">Apex_Registry_West</div>
-            <div class="node-tag" style="color:var(--magenta)">GOV_NODE // VERIFIED</div>
-            <div class="pulse-content">Lattice stability in Lagos Sector-7 remains at 99.8% after the Mobius Graphene patch. Rewards (SINT) distributed.</div>
-            <div class="pulse-footer"><span>⌬ Resonate 4.1k</span><span>Ξ Interlace 1.2k</span></div>
+<body class="bg-obsidian text-white font-sans antialiased overflow-x-hidden">
+  
+  <!-- Navigation Bar -->
+  <nav class="fixed w-full z-50 glass-panel border-b-0 border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="font-mono font-bold text-2xl tracking-widest text-white">SINTER<span class="text-neon">.</span></a>
         </div>
-        <div class="pulse-card">
-            <div class="node-name">Architect_Bobby</div>
-            <div class="node-tag">LATTICE_ENTITY</div>
-            <div class="pulse-content">Verified: The Mobius Weave prevents phase-slip centers. Zero resistance achieved. The 5th Rev is physical. 🌀👊⚡️</div>
-            <div class="pulse-footer"><span>⌬ Resonate 892</span><span>Ξ Interlace 441</span></div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#technology" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Technology</a>
+          <a href="#ecosystem" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Ecosystem</a>
+          <a href="#roadmap" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Roadmap</a>
+          <a href="#whitepaper" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Whitepaper</a>
+          <a href="#join" class="neon-btn border border-neon text-neon px-5 py-2 rounded uppercase text-sm font-mono hover:bg-neon hover:text-obsidian font-bold">Join the Network</a>
         </div>
-    </main>
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-btn" class="text-gray-300 hover:text-white">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <!-- ThreeJS Canvas Background -->
+    <canvas id="hero-canvas"></canvas>
+    
+    <div class="content-z max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
+        Beyond the <br class="md:hidden" />
+        <span class="text-gradient">4th Industrial Revolution.</span>
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-10">
+        Sinter is the foundation for a new era of human-centric technology. We are weaving the <span class="text-white font-semibold">Lattice</span>—a decentralized, 5G-powered infrastructure designed to empower Africa and the world.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#ecosystem" class="neon-btn bg-neon text-obsidian px-8 py-4 rounded font-mono font-bold uppercase tracking-wider w-full sm:w-auto hover:bg-white hover:text-obsidian transition-colors">
+          Explore the Ecosystem
+        </a>
+        <a href="#vision" class="px-8 py-4 rounded font-mono font-bold uppercase tracking-wider w-full sm:w-auto border border-gray-600 text-gray-300 hover:border-white hover:text-white transition-all">
+          Read the Manifesto
+        </a>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce content-z">
+      <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+    </div>
+  </section>
+
+  <!-- Section 1: The Vision -->
+  <section id="vision" class="py-24 relative z-10 bg-obsidian border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="text-neon font-mono text-sm tracking-widest uppercase mb-2 block">The Vision</span>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">From 4IR to <span class="text-gradient">5IR</span></h2>
+        <p class="text-gray-400 max-w-3xl mx-auto text-lg leading-relaxed">
+          The Fourth Industrial Revolution focused on automation and efficiency. The 5th Industrial Revolution (5IR) focuses on the synergy between humans and machines. Sinter provides the connectivity, materials, and economic framework to make this transition seamless.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 mt-16">
+        <!-- Feature 1 -->
+        <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center mb-6 border border-neon/30">
+            <svg class="w-6 h-6 text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">Decentralized Connectivity</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Powered by next-generation 5G-NSA architecture, establishing resilient communication nodes globally.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-neonPurple/10 rounded-full flex items-center justify-center mb-6 border border-neonPurple/30">
+            <svg class="w-6 h-6 text-neonPurple" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">Material Innovation</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Utilizing cutting-edge CNT-Aerogel technology for next-gen hardware that defies traditional physics.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="glass-panel p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/30">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">Economic Equilibrium</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">A revolutionary system of Monetary Syntropy that objectively rewards active network contribution.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Technical Core -->
+  <section id="technology" class="py-24 relative z-10 bg-[#050505] border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="text-neonPurple font-mono text-sm tracking-widest uppercase mb-2 block">Technical Core</span>
+          <h2 class="text-4xl md:text-5xl font-bold">The Architecture of <br/><span class="text-gradient">Tomorrow</span></h2>
+        </div>
+        <p class="text-gray-400 max-w-md text-base">
+          Our stack redefines what's possible, blending software elegance with hardware durability.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Tech Item 1 -->
+        <div class="glass-panel p-8 md:p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
+          <div class="md:w-1/3 w-full">
+            <h3 class="text-2xl font-bold mb-2 font-mono text-neon">The Lattice Network</h3>
+            <div class="h-1 w-12 bg-neon rounded mt-4"></div>
+          </div>
+          <div class="md:w-2/3 w-full border-l border-white/10 pl-0 md:pl-8">
+            <p class="text-gray-300 text-lg leading-relaxed">
+              A resilient, decentralized grid providing high-speed connectivity to even the most remote regions. By removing central points of failure, the Lattice guarantees continuous uptime and unmatched data fidelity.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tech Item 2 -->
+        <div class="glass-panel p-8 md:p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
+          <div class="md:w-1/3 w-full">
+            <h3 class="text-2xl font-bold mb-2 font-mono text-neonPurple">The Vortex Engine</h3>
+            <div class="h-1 w-12 bg-neonPurple rounded mt-4"></div>
+          </div>
+          <div class="md:w-2/3 w-full border-l border-white/10 pl-0 md:pl-8">
+            <p class="text-gray-300 text-lg leading-relaxed">
+              Advanced computational processing that mimics natural fluid dynamics for maximum efficiency and minimum energy waste. The Vortex Engine computes complex AI and Web3 operations with a fraction of the carbon footprint.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tech Item 3 -->
+        <div class="glass-panel p-8 md:p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
+          <div class="md:w-1/3 w-full">
+            <h3 class="text-2xl font-bold mb-2 font-mono text-white">CNT-Aerogel Integration</h3>
+            <div class="h-1 w-12 bg-white rounded mt-4"></div>
+          </div>
+          <div class="md:w-2/3 w-full border-l border-white/10 pl-0 md:pl-8">
+            <p class="text-gray-300 text-lg leading-relaxed">
+              We don't just build software; we build the future's hardware. Our research into Carbon Nanotube Aerogels ensures ultra-light, ultra-strong, and thermally efficient infrastructure capable of surviving extreme conditions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: For the People -->
+  <section id="ecosystem" class="py-32 relative z-10 bg-obsidian border-t border-white/5 overflow-hidden">
+    <!-- Abstract background elements -->
+    <div class="absolute top-0 right-0 -mr-48 -mt-48 w-96 h-96 bg-neon/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 -ml-48 -mb-48 w-96 h-96 bg-neonPurple/10 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <span class="text-white font-mono text-sm tracking-widest uppercase mb-4 block">For the People</span>
+      <h2 class="text-4xl md:text-6xl font-bold mb-8">Built in Africa, <br/><span class="text-gradient">for the World</span></h2>
+      <p class="text-gray-300 text-xl leading-relaxed mb-12">
+        Sinter is designed to solve real-world problems. From banking the unbanked with blockchain-backed identities to providing the bandwidth needed for AI-driven agriculture and healthcare. We are building the tools of liberation.
+      </p>
+      <a href="#join" class="inline-block neon-btn border-2 border-neon text-neon px-10 py-4 rounded font-mono font-bold uppercase tracking-wider hover:bg-neon hover:text-obsidian transition-all">
+        Join the Network
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#020202] border-t border-white/10 py-12 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-4 md:mb-0">
+        <a href="#" class="font-mono font-bold text-2xl tracking-widest text-white opacity-50 hover:opacity-100 transition-opacity">SINTER<span class="text-neon">.</span></a>
+      </div>
+      <div class="text-gray-600 text-sm font-mono text-center md:text-right">
+        &copy; <script>document.write(new Date().getFullYear())</script> SINTER Network. All rights reserved.<br/>
+        Initiating 5IR Protocol...
+      </div>
+    </div>
+  </footer>
+
+  <!-- ThreeJS for 3D Background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

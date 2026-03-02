@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SINTER | The 5th Industrial Revolution Social Ecosystem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#020202',
+            neon: '#00f0ff',
+            neonPurple: '#b026ff',
+            surface: 'rgba(255, 255, 255, 0.05)'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Roboto Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-obsidian text-white font-sans antialiased overflow-x-hidden">
+  
+  <!-- Navigation Bar -->
+  <nav class="fixed w-full z-50 glass-panel border-b-0 border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex-shrink-0 flex items-center">
+          <a href="#" class="font-mono font-bold text-2xl tracking-widest text-white">SINTER<span class="text-neon">.</span></a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#ecosystem" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Ecosystem</a>
+          <a href="#academy" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Academy</a>
+          <a href="#technology" class="text-gray-300 hover:text-neon transition-colors text-sm uppercase tracking-wider font-mono">Technology</a>
+          
+          <!-- User HUD (Hidden until Uplinked) -->
+          <div id="user-hud" class="hidden items-center space-x-4 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+            <div class="text-right flex flex-col items-end">
+              <span id="hud-status" class="text-[10px] font-mono text-neon uppercase tracking-widest leading-none mb-1">Verified Node</span>
+              <span id="hud-resonance" class="text-sm font-bold text-white leading-none">500 RY</span>
+            </div>
+            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-neon to-neonPurple flex items-center justify-center text-obsidian font-bold font-mono shadow-[0_0_10px_rgba(0,240,255,0.5)]">N</div>
+          </div>
+
+          <button id="nav-uplink-btn" class="uplink-trigger neon-btn border border-neon text-neon px-5 py-2 rounded uppercase text-sm font-mono hover:bg-neon hover:text-obsidian font-bold">Initiate Uplink</button>
+        </div>
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-btn" class="text-gray-300 hover:text-white">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <!-- ThreeJS Canvas Background -->
+    <canvas id="hero-canvas"></canvas>
+    
+    <div class="content-z max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
+        The 5th Industrial <br class="md:hidden" />
+        <span class="text-gradient">Social Ecosystem.</span>
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-10">
+        Sinter is a hybrid platform bridging the gap between social networking and professional opportunity. We are building the foundational layer of the <span class="text-white font-semibold">African Digital Architecture</span>, focusing on human-centricity, collaboration, and the gig economy.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button id="hero-action-btn" class="uplink-trigger neon-btn bg-neon text-obsidian px-8 py-4 rounded font-mono font-bold uppercase tracking-wider w-full sm:w-auto hover:bg-white hover:text-obsidian transition-colors">
+          Join the Network
+        </button>
+        <a href="#academy" class="px-8 py-4 rounded font-mono font-bold uppercase tracking-wider w-full sm:w-auto border border-gray-600 text-gray-300 hover:border-white hover:text-white transition-all">
+          Explore Academy
+        </a>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce content-z">
+      <a href="#ecosystem">
+        <svg class="w-6 h-6 text-gray-500 hover:text-neon transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Live Network Dashboard -->
+  <section class="relative z-10 bg-[#050505] border-y border-white/10 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-mono">
+        <div>
+          <div class="text-neon text-3xl font-bold mb-1" id="stat-nodes">0</div>
+          <div class="text-xs text-gray-500 uppercase tracking-widest">Active Nodes</div>
+        </div>
+        <div>
+          <div class="text-neonPurple text-3xl font-bold mb-1"><span id="stat-uptime">99.99</span>%</div>
+          <div class="text-xs text-gray-500 uppercase tracking-widest">Network Uptime</div>
+        </div>
+        <div>
+          <div class="text-white text-3xl font-bold mb-1" id="stat-tb">0</div>
+          <div class="text-xs text-gray-500 uppercase tracking-widest">Tasks Matched</div>
+        </div>
+        <div>
+          <div class="text-gradient text-3xl font-bold mb-1" id="stat-syntropy">0</div>
+          <div class="text-xs text-gray-500 uppercase tracking-widest">Resonance Yield</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: The Social Ecosystem -->
+  <section id="ecosystem" class="py-24 relative z-10 bg-obsidian">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="text-neon font-mono text-sm tracking-widest uppercase mb-2 block">Core Philosophy</span>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Moving Beyond <span class="text-gradient">Automation</span></h2>
+        <p class="text-gray-400 max-w-3xl mx-auto text-lg leading-relaxed">
+          The 5th Industrial Revolution (5IR) prioritizes the synergy between humans and machines. Sinter integrates social interaction with localized gig economies, allowing your community presence to seamlessly build professional trust and opportunity.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+        <!-- Feature 1 -->
+        <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-neon/10 rounded-full flex items-center justify-center mb-6 border border-neon/30">
+            <svg class="w-6 h-6 text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">The Social "Pulse"</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">The Manifold feed prioritizes "Pulses"—high-value content that resonates with the community, driving meaningful engagement over passive scrolling.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-neonPurple/10 rounded-full flex items-center justify-center mb-6 border border-neonPurple/30">
+            <svg class="w-6 h-6 text-neonPurple" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">The Professional "Lattice"</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Users operate as "Nodes". Trust is systematically built through verified skills and a public, immutable history of successful collaborations.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/30">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">The Task-Pool</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">A fluid marketplace where businesses post "Work-Units". The Vortex algorithm matches tasks to the most qualified Nodes based on their "Resonance".</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300">
+          <div class="w-12 h-12 bg-gray-500/10 rounded-full flex items-center justify-center mb-6 border border-gray-500/30">
+            <svg class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3 font-mono">The Registry</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">A dedicated, official space for verified organizations, institutions, and government bodies to provide updates and verify credentials safely.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Sinter Academy -->
+  <section id="academy" class="py-24 relative z-10 bg-[#050505] border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="text-neonPurple font-mono text-sm tracking-widest uppercase mb-2 block">Educational Engine</span>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Sinter <span class="text-gradient">Academy</span></h2>
+        <p class="text-gray-400 max-w-3xl mx-auto text-lg leading-relaxed">
+          Equipping the next generation of African innovators, engineers, and digital architects. We bridge the gap between fundamental science and cutting-edge decentralized technology to build true Resonance.
+        </p>
+      </div>
+
+      <!-- Module 1: Foundations -->
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold font-mono text-white mb-2 border-l-4 border-neon pl-4">Module 1: Foundations of Physics for the 5th IR</h3>
+        <p class="text-gray-400 mb-8 pl-5">Explore the core physical principles that power the Sinter Ecosystem, from the vibrations of a network to the structural integrity of our cities.</p>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Mod 1.1 -->
+          <div class="glass-panel p-6 rounded-xl border-t-2 border-t-neon/50">
+            <h4 class="text-lg font-bold mb-2 text-neon">1. Waves and Resonance</h4>
+            <p class="text-gray-400 text-sm mb-3"><strong class="text-gray-200">Frequency & Amplitude:</strong> Understanding 5G spectrum data transfer mechanics.</p>
+            <p class="text-gray-400 text-sm"><strong class="text-gray-200">Resonance:</strong> Applying physical vibration frequencies to Data Resonance—synchronizing information across nodes.</p>
+          </div>
+          <!-- Mod 1.2 -->
+          <div class="glass-panel p-6 rounded-xl border-t-2 border-t-neonPurple/50">
+            <h4 class="text-lg font-bold mb-2 text-neonPurple">2. Thermodynamics & Syntropy</h4>
+            <p class="text-gray-400 text-sm mb-3"><strong class="text-gray-200">2nd Law:</strong> Understanding how systems tend toward entropy (disorder).</p>
+            <p class="text-gray-400 text-sm"><strong class="text-gray-200">Syntropic Energy:</strong> Using smart design to minimize energy waste and maximize digital efficiency.</p>
+          </div>
+          <!-- Mod 1.3 -->
+          <div class="glass-panel p-6 rounded-xl border-t-2 border-t-white/50">
+            <h4 class="text-lg font-bold mb-2 text-white">3. Material Science: Carbon</h4>
+            <p class="text-gray-400 text-sm mb-3"><strong class="text-gray-200">Tensile Strength:</strong> Carbon Nanotubes (CNTs) are 100x stronger than steel.</p>
+            <p class="text-gray-400 text-sm"><strong class="text-gray-200">Thermal/Electrical:</strong> Essential for high-performance computing heat dissipation and smart material networks.</p>
+          </div>
+          <!-- Mod 1.4 -->
+          <div class="glass-panel p-6 rounded-xl border-t-2 border-t-neon/50">
+            <h4 class="text-lg font-bold mb-2 text-neon">4. Electromagnetism & Lattice</h4>
+            <p class="text-gray-400 text-sm mb-3"><strong class="text-gray-200">Signal Propagation:</strong> How waves move through air, fiber, and vacuum.</p>
+            <p class="text-gray-400 text-sm"><strong class="text-gray-200">Shielding:</strong> Faraday Cage principles to protect data nodes from electronic noise.</p>
+          </div>
+          <!-- Mod 1.5 -->
+          <div class="glass-panel p-6 rounded-xl border-t-2 border-t-neonPurple/50">
+            <h4 class="text-lg font-bold mb-2 text-neonPurple">5. Quantum Mechanics</h4>
+            <p class="text-gray-400 text-sm mb-3"><strong class="text-gray-200">Superposition:</strong> Multiple states at once for exponentially faster computing.</p>
+            <p class="text-gray-400 text-sm"><strong class="text-gray-200">Entanglement:</strong> Instant correlations between nodes regardless of distance.</p>
+          </div>
+          <!-- Outcomes -->
+          <div class="glass-panel p-6 rounded-xl bg-neon/5 border-neon/30 flex flex-col justify-center">
+            <h4 class="text-lg font-bold mb-2 text-white">Learning Outcomes</h4>
+            <p class="text-gray-300 text-sm italic">"Understand the 'Why' behind the 'How'. See how the physical world dictates the architecture of the digital world to build a human-centric future."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Academy Assessment Gamification -->
+      <div class="mt-16 glass-panel p-8 md:p-12 rounded-xl border border-neon/30 relative overflow-hidden" id="mod1-assessment">
+        <!-- Glow effect -->
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-neon/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto">
+          <h3 class="text-3xl font-bold font-mono text-white mb-2">Knowledge Synchronization</h3>
+          <p class="text-gray-400 mb-8 text-lg">Test your understanding of Module 1. Successful synchronization yields <span class="text-neon font-bold">+1000 Resonance Yield</span>.</p>
+
+          <form id="quiz-mod1" class="space-y-8">
+            <!-- Q1 -->
+            <div class="quiz-question bg-black/30 p-6 rounded-lg border border-white/5">
+              <p class="text-lg text-gray-200 mb-4 font-medium">1. Which material is 100x stronger than steel and essential for 5IR infrastructure?</p>
+              <div class="space-y-3 font-mono text-sm md:text-base">
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q1" value="a" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Silicon Carbide</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q1" value="b" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Graphene Oxide</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q1" value="c" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Carbon Nanotubes (CNTs)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-question bg-black/30 p-6 rounded-lg border border-white/5">
+              <p class="text-lg text-gray-200 mb-4 font-medium">2. Which concept describes minimizing energy waste and maximizing order in a digital environment?</p>
+              <div class="space-y-3 font-mono text-sm md:text-base">
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q2" value="a" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Entropy</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q2" value="b" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Syntropy</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q2" value="c" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Thermodynamic Equilibrium</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-question bg-black/30 p-6 rounded-lg border border-white/5">
+              <p class="text-lg text-gray-200 mb-4 font-medium">3. What quantum principle allows for instant correlations between nodes regardless of distance?</p>
+              <div class="space-y-3 font-mono text-sm md:text-base">
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q3" value="a" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Entanglement</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q3" value="b" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Superposition</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded border border-white/10 hover:bg-white/5 cursor-pointer transition-colors has-[:checked]:bg-neon/10 has-[:checked]:border-neon">
+                  <input type="radio" name="q3" value="c" class="w-4 h-4 text-neon bg-obsidian border-gray-600 focus:ring-neon focus:ring-2">
+                  <span class="text-gray-300">Wave-Particle Duality</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="quiz-feedback" class="hidden p-4 rounded bg-red-500/10 border border-red-500/50 text-red-400 font-mono text-sm"></div>
+
+            <button type="submit" class="neon-btn bg-neon/10 border border-neon text-neon px-8 py-4 rounded font-mono font-bold uppercase tracking-wider hover:bg-neon hover:text-obsidian transition-colors w-full sm:w-auto">
+              Submit Assessment
+            </button>
+          </form>
+
+          <div id="quiz-success" class="hidden text-center py-12">
+            <div class="w-24 h-24 mx-auto bg-neon/20 rounded-full flex items-center justify-center mb-6 border-4 border-neon shadow-[0_0_30px_rgba(0,240,255,0.4)]">
+              <svg class="w-12 h-12 text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h4 class="text-3xl font-bold text-white mb-3">Synchronization Complete</h4>
+            <p class="text-neon font-mono text-xl mb-4 font-bold">+1000 Resonance Yield</p>
+            <p class="text-gray-400 max-w-lg mx-auto text-lg leading-relaxed">Your Node status has been upgraded. You now possess foundational 5IR clearance to access advanced Work-Units in the Task-Pool.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Technical Core -->
+  <section id="technology" class="py-24 relative z-10 bg-obsidian border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="text-neonPurple font-mono text-sm tracking-widest uppercase mb-2 block">Technical Core</span>
+          <h2 class="text-4xl md:text-5xl font-bold">The Architecture of <br/><span class="text-gradient">Tomorrow</span></h2>
+        </div>
+        <p class="text-gray-400 max-w-md text-base">
+          Optimized for the 5G-NSA era, ensuring the platform is fast and accessible even in regions with fluctuating bandwidth.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Tech Item 1 -->
+        <div class="glass-panel p-8 md:p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
+          <div class="md:w-1/3 w-full">
+            <h3 class="text-2xl font-bold mb-2 font-mono text-neon">The Lattice Network</h3>
+            <div class="h-1 w-12 bg-neon rounded mt-4"></div>
+          </div>
+          <div class="md:w-2/3 w-full border-l border-white/10 pl-0 md:pl-8">
+            <p class="text-gray-300 text-lg leading-relaxed">
+              A resilient, decentralized grid providing high-speed connectivity to even the most remote regions. By removing central points of failure, the Lattice guarantees continuous uptime and unmatched data fidelity.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tech Item 2 -->
+        <div class="glass-panel p-8 md:p-10 rounded-xl flex flex-col md:flex-row gap-8 items-center">
+          <div class="md:w-1/3 w-full">
+            <h3 class="text-2xl font-bold mb-2 font-mono text-neonPurple">The Vortex Engine</h3>
+            <div class="h-1 w-12 bg-neonPurple rounded mt-4"></div>
+          </div>
+          <div class="md:w-2/3 w-full border-l border-white/10 pl-0 md:pl-8">
+            <p class="text-gray-300 text-lg leading-relaxed">
+              Advanced computational processing that matches tasks to Nodes based on Resonance. It mimics natural fluid dynamics for maximum efficiency, computing complex AI operations with a fraction of the carbon footprint.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Global Footprint (With Globe) -->
+  <section id="global" class="py-32 min-h-screen relative z-10 bg-[#050505] border-t border-white/5 overflow-hidden flex items-center">
+    
+    <!-- 3D Globe Canvas -->
+    <canvas id="globe-canvas"></canvas>
+
+    <!-- Overlay Gradient for text readability -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050505]/90 via-transparent to-[#050505]/80 pointer-events-none"></div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-20">
+      <span class="text-white font-mono text-sm tracking-widest uppercase mb-4 block drop-shadow-md">Strategic Importance</span>
+      <h2 class="text-4xl md:text-6xl font-bold mb-8 drop-shadow-lg">Built in Africa, <br/><span class="text-gradient">for the World</span></h2>
+      <p class="text-gray-300 text-xl leading-relaxed mb-12 drop-shadow-md bg-obsidian/60 p-6 rounded-xl backdrop-blur-md border border-white/10">
+        Sinter solves real-world challenges by providing reliable digital identities, local economic inclusion via direct mobile payment integration (e.g., M-Pesa), and acting as the Digital Nervous System for emerging markets.
+      </p>
+      <button class="uplink-trigger inline-block neon-btn border-2 border-neon text-neon px-10 py-4 rounded font-mono font-bold uppercase tracking-wider hover:bg-neon hover:text-obsidian transition-all bg-obsidian/50 backdrop-blur-md">
+        Deploy a Node
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#020202] border-t border-white/10 py-12 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-4 md:mb-0">
+        <a href="#" class="font-mono font-bold text-2xl tracking-widest text-white opacity-50 hover:opacity-100 transition-opacity">SINTER<span class="text-neon">.</span></a>
+      </div>
+      <div class="text-gray-600 text-sm font-mono text-center md:text-right">
+        &copy; <script>document.write(new Date().getFullYear())</script> SINTER Network. All rights reserved.<br/>
+        Initiating 5IR Protocol...
+      </div>
+    </div>
+  </footer>
+
+  <!-- Uplink Modal (Hidden by default) -->
+  <div id="uplink-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="uplink-close-overlay"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-lg mx-4 glass-panel border-neon/50 border shadow-[0_0_30px_rgba(0,240,255,0.15)] rounded-lg overflow-hidden scanlines">
+      <div class="bg-neon text-obsidian px-4 py-2 font-mono text-sm font-bold flex justify-between items-center">
+        <span>> TERMINAL_UPLINK_v5.0</span>
+        <button id="close-modal-btn" class="hover:text-white transition-colors">✕</button>
+      </div>
+      
+      <div class="p-8 font-mono h-64 flex flex-col justify-end relative">
+        <div id="terminal-content" class="text-neon space-y-3 text-sm md:text-base mb-4 overflow-y-auto max-h-full">
+          <!-- Terminal output injected via JS -->
+        </div>
+        
+        <!-- Input Form (Hidden initially) -->
+        <form id="uplink-form" class="hidden mt-4 opacity-0 transition-opacity duration-500">
+          <div class="flex border border-neon/50 bg-black/50 focus-within:border-neon focus-within:shadow-[0_0_10px_rgba(0,240,255,0.3)] transition-all">
+            <span class="text-neon p-3 border-r border-neon/50">></span>
+            <input type="email" id="uplink-email" required placeholder="Enter_Identity_Hash (Email)" class="bg-transparent text-white w-full p-3 outline-none placeholder-gray-600">
+            <button type="submit" class="bg-neon/10 text-neon hover:bg-neon hover:text-obsidian px-6 font-bold transition-colors">SYNC</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Miniapps SDK & Scripts -->
+  <script src="https://miniapps.ai/sdk/miniapps-ai-v1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
